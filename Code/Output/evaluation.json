@@ -1,0 +1,173 @@
+{
+  "expected_path": "/Users/nguyentranhuy/Desktop/Text2SQL/Code/Input/Target.csv",
+  "predicted_path": "/Users/nguyentranhuy/Desktop/Text2SQL/Code/Output/Table.csv",
+  "key_column": "student_id",
+  "key_mode": "auto",
+  "columns": {
+    "expected_count": 7,
+    "predicted_count": 12,
+    "matched_count": 7,
+    "missing": [],
+    "extra": [
+      "Academic year",
+      "Cohort",
+      "Course",
+      "Lecturer",
+      "Semester"
+    ],
+    "precision": 0.5833333333333334,
+    "recall": 1.0,
+    "f1": 0.7368421052631579
+  },
+  "rows": {
+    "expected_count": 96,
+    "predicted_count": 96,
+    "matched_count": 96,
+    "missing_count": 0,
+    "extra_count": 0,
+    "missing_keys": [],
+    "extra_keys": [],
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "exact_row_accuracy": 0.0
+  },
+  "cells": {
+    "matched_common_cells": 546,
+    "compared_common_cells": 672,
+    "matched_expected_cells": 546,
+    "expected_cell_total": 672,
+    "common_cell_accuracy": 0.8125,
+    "coverage_cell_accuracy": 0.8125
+  },
+  "overall_score": 0.8348684210526316,
+  "ignored_columns": [
+    "row_number"
+  ],
+  "worst_columns": [
+    {
+      "column": "Lớp",
+      "accuracy": 0.0,
+      "matches": 0,
+      "mismatches": 96
+    },
+    {
+      "column": "Tổng điểm",
+      "accuracy": 0.84375,
+      "matches": 81,
+      "mismatches": 15
+    },
+    {
+      "column": "Điểm môn học Cuối kỳ",
+      "accuracy": 0.84375,
+      "matches": 81,
+      "mismatches": 15
+    },
+    {
+      "column": "Họ và tên",
+      "accuracy": 1.0,
+      "matches": 96,
+      "mismatches": 0
+    },
+    {
+      "column": "Mã SV",
+      "accuracy": 1.0,
+      "matches": 96,
+      "mismatches": 0
+    },
+    {
+      "column": "Ngày sinh",
+      "accuracy": 1.0,
+      "matches": 96,
+      "mismatches": 0
+    },
+    {
+      "column": "Điểm môn học Thành phần",
+      "accuracy": 1.0,
+      "matches": 96,
+      "mismatches": 0
+    }
+  ],
+  "mismatch_examples": [
+    {
+      "row": "22022518",
+      "expected_row_number": 11,
+      "predicted_row_number": 11,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI2",
+      "predicted": "AI2"
+    },
+    {
+      "row": "22022523",
+      "expected_row_number": 24,
+      "predicted_row_number": 24,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI1",
+      "predicted": "AI1"
+    },
+    {
+      "row": "22022525",
+      "expected_row_number": 80,
+      "predicted_row_number": 80,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI2",
+      "predicted": "AI2"
+    },
+    {
+      "row": "22022582",
+      "expected_row_number": 42,
+      "predicted_row_number": 42,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI1",
+      "predicted": "AI1"
+    },
+    {
+      "row": "22022585",
+      "expected_row_number": 39,
+      "predicted_row_number": 39,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI2",
+      "predicted": "AI2"
+    },
+    {
+      "row": "22022585",
+      "expected_row_number": 39,
+      "predicted_row_number": 39,
+      "column": "Tổng điểm",
+      "expected": "9.1",
+      "predicted": "9.12"
+    },
+    {
+      "row": "22022585",
+      "expected_row_number": 39,
+      "predicted_row_number": 39,
+      "column": "Điểm môn học Cuối kỳ",
+      "expected": "9.1",
+      "predicted": "9.12"
+    },
+    {
+      "row": "22022587",
+      "expected_row_number": 31,
+      "predicted_row_number": 31,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI2",
+      "predicted": "AI2"
+    },
+    {
+      "row": "22022610",
+      "expected_row_number": 34,
+      "predicted_row_number": 34,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI2",
+      "predicted": "AI2"
+    },
+    {
+      "row": "22022615",
+      "expected_row_number": 76,
+      "predicted_row_number": 76,
+      "column": "Lớp",
+      "expected": "QH-2022-I/CQ-A-AI2",
+      "predicted": "AI2"
+    }
+  ]
+}

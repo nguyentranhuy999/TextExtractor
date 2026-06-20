@@ -1,0 +1,11 @@
+{
+  "python.terminal.executeInFileDir": false,
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/Code"
+  ],
+  "code-runner.executorMap": {
+    "python": "python3 -u"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.ignoreSelection": true
+}
