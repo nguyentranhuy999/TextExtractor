@@ -1,0 +1,2 @@
+# Full, resolved CPU environment used for validation; legacy requirements.txt remains independent.
+-r requirements.lock.txt

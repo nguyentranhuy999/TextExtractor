@@ -1,0 +1,35 @@
+{
+  "version": "1.0-validation-headers",
+  "tables": {"players": ["player", "basketball player", "player statistics", "player stats"], "teams": ["team", "basketball team", "team statistics", "team stats"]},
+  "fields": {
+    "players": {
+      "points": ["pts", "points scored"],
+      "total rebounds": ["rebounds", "reb", "trb"],
+      "assists": ["ast"], "steals": ["stl"], "blocks": ["blk", "blocked shots"],
+      "turnovers": ["tov", "to"], "minutes played": ["minutes", "min"],
+      "personal fouls": ["fouls", "pf"],
+      "offensive rebounds": ["oreb", "orb"], "defensive rebounds": ["dreb", "drb"],
+      "field goals made": ["fgm", "field goal made"],
+      "field goals attempted": ["fga", "field goal attempts", "field goals attempts"],
+      "field goal percentage": ["fg%", "field goal percent", "field goal pct", "shooting percentage"],
+      "3-pointers made": ["3pm", "three pointers made", "three point field goals made", "three point makes"],
+      "3-pointers attempted": ["3pa", "three pointers attempted", "three point attempts"],
+      "3-pointer percentage": ["3p%", "three point percentage", "three point pct"],
+      "free throws made": ["ftm", "free throw made"],
+      "free throws attempted": ["fta", "free throw attempts"],
+      "free throw percentage": ["ft%", "free throw percent", "free throw pct"]
+    },
+    "teams": {
+      "total points": ["points", "pts", "score", "points scored"],
+      "rebounds": ["total rebounds", "reb", "trb"],
+      "number of team assists": ["assists", "ast", "team assists"],
+      "turnovers": ["tov", "to"], "wins": ["w"], "losses": ["l"],
+      "percentage of field goals": ["field goal percentage", "fg%", "field goal pct", "shooting percentage"],
+      "percentage of 3 points": ["three point percentage", "3-pointer percentage", "3p%", "three point pct"],
+      "points in 1st quarter": ["first quarter points", "q1 points", "points q1"],
+      "points in 2nd quarter": ["second quarter points", "q2 points", "points q2"],
+      "points in 3rd quarter": ["third quarter points", "q3 points", "points q3"],
+      "points in 4th quarter": ["fourth quarter points", "q4 points", "points q4"]
+    }
+  }
+}

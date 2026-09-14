@@ -1,0 +1,117 @@
+% !TeX program = xelatex
+% Báo cáo học phần Thực tập doanh nghiệp; bản mẫu gốc được giữ tại main.template.tex.
+\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\setmainfont{TeX Gyre Termes}}
+\IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{TeX Gyre Heros}}
+\IfFontExistsTF{Courier New}{\setmonofont{Courier New}[Scale=0.85]}{\setmonofont{Latin Modern Mono}[Scale=0.85]}
+\usepackage[a4paper,left=2.7cm,right=2.3cm,top=2.8cm,bottom=2.5cm,headheight=16pt]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,longtable,tabularx,array}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\usepackage{enumitem,caption,float,fancyhdr,titlesec,indentfirst}
+\usepackage[hidelinks,unicode]{hyperref}
+\definecolor{accent}{HTML}{246E85}
+\definecolor{soft}{HTML}{EEF4F6}
+\hypersetup{pdftitle={Trích xuất bảng từ văn bản bằng GLiNER2 và GPT 5.5},pdfauthor={Nguyễn Trần Huy},pdfsubject={Trích xuất cục bộ và hybrid - báo cáo Thực tập doanh nghiệp}}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\listfigurename}{Danh mục hình}
+\renewcommand{\listtablename}{Danh mục bảng}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\refname}{Tài liệu tham khảo}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\linespread{1.08}
+\setlist{nosep,leftmargin=1.5em,topsep=5pt}
+\captionsetup{font=small,labelfont=bf,skip=8pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize Trích xuất bảng bằng GLiNER2 và GPT 5.5}
+\fancyhead[R]{\footnotesize UET - VNU}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{.7em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{.7em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{.7em}{}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\newcommand{\chapterstart}[1]{\clearpage\section{#1}}
+\begin{document}
+\pagenumbering{gobble}
+\begin{titlepage}
+\begin{tikzpicture}[overlay,remember picture]
+\draw[line width=2pt] ($(current page.north west)+(2cm,-1.8cm)$) rectangle ($(current page.south east)+(-1.6cm,1.8cm)$);
+\draw[line width=.7pt] ($(current page.north west)+(2.15cm,-1.95cm)$) rectangle ($(current page.south east)+(-1.75cm,1.95cm)$);
+\end{tikzpicture}
+\centering
+{\fontsize{14}{17}\selectfont\bfseries ĐẠI HỌC QUỐC GIA HÀ NỘI}\\[.2cm]
+{\fontsize{15}{18}\selectfont\bfseries TRƯỜNG ĐẠI HỌC CÔNG NGHỆ}\\[.2cm]
+\rule{8cm}{.7pt}
+\vspace{.65cm}
+
+\includegraphics[width=2.9cm]{uet.png}
+\vspace{.7cm}
+
+{\fontsize{18}{22}\selectfont\bfseries BÁO CÁO HỌC PHẦN THỰC TẬP DOANH NGHIỆP}\\[.65cm]
+{\fontsize{16}{20}\selectfont\bfseries ĐỀ TÀI}\\[.4cm]
+{\fontsize{22}{27}\selectfont\bfseries TRÍCH XUẤT BẢNG TỪ VĂN BẢN\\[.15cm] BẰNG GLiNER2 VÀ GPT 5.5}\\[.45cm]
+{\large Khảo sát phương pháp kết hợp trên dữ liệu RotoWire}
+\vspace{1.1cm}
+
+\begin{tabular}{@{}l l r@{}}
+\textbf{Giảng viên hướng dẫn:}&ThS. Nguyễn Thị Thuỳ Linh&\\[.25cm]
+\textbf{Sinh viên thực hiện:}&Nguyễn Trần Huy&23020378\\
+\end{tabular}
+\vfill
+{\large\bfseries Hà Nội, tháng 9 năm 2026}
+\end{titlepage}
+
+\clearpage\thispagestyle{empty}
+\begin{center}\Large\bfseries Ý KIẾN ĐÁNH GIÁ\end{center}
+\vspace{.8cm}
+\noindent\textbf{Ý kiến đánh giá:}\\[.5cm]
+\foreach \n in {1,...,10}{\noindent\makebox[\textwidth]{\dotfill}\\[.6cm]}
+\vspace{.5cm}
+\noindent\textbf{Điểm số:} \dotfill\hspace{1cm}\textbf{Điểm chữ:}\dotfill
+\vspace{1.3cm}
+\begin{flushright}Hà Nội, ngày \dots, tháng \dots, năm 20\dots\\[1cm]
+\textbf{Giảng viên đánh giá}\\\textit{(Ký, ghi rõ họ tên)}\end{flushright}
+
+\clearpage\thispagestyle{empty}
+\begin{center}\Large\bfseries LỜI CẢM ƠN\end{center}
+\vspace{.6cm}
+Em xin trân trọng cảm ơn cô ThS. Nguyễn Thị Thuỳ Linh đã cung cấp đề tài, hướng dẫn và hỗ trợ em trong quá trình thực hiện học phần Thực tập doanh nghiệp. Báo cáo này trình bày việc xây dựng và đánh giá hệ thống trích xuất bảng từ văn bản bằng GLiNER2 và GPT 5.5, với trọng tâm là trích xuất cục bộ, cơ chế hoạt động của mô hình và đánh giá trên dữ liệu thực tế.
+
+Thông qua đề tài, em có cơ hội tìm hiểu cách tổ chức dữ liệu phi cấu trúc thành bảng, ứng dụng mô hình trích xuất trên máy tính cá nhân và kết hợp mô hình ngôn ngữ để đề xuất schema theo nội dung. Em hướng tới một giải pháp giảm phụ thuộc vào dịch vụ suy luận bên ngoài, đồng thời có cấu trúc linh hoạt để mở rộng cho nhiều loại văn bản.
+
+Em kính mong nhận được góp ý để hoàn thiện phương pháp đánh giá, cách diễn giải kết quả và hướng phát triển của hệ thống.
+\begin{flushright}Sinh viên thực hiện\\Nguyễn Trần Huy\end{flushright}
+
+\clearpage
+\pagenumbering{roman}
+\section*{Tóm tắt}\addcontentsline{toc}{section}{Tóm tắt}
+Dự án nghiên cứu phương pháp chuyển văn bản thành bảng bằng GLiNER2, với định hướng thực hiện phần trích xuất trên máy cục bộ. Khi schema được cung cấp sẵn và mô hình đã được tải, GLiNER2 có thể xử lý văn bản trên CPU mà không cần gửi nội dung tài liệu tới dịch vụ LLM. Cách triển khai này loại bỏ nhu cầu sử dụng token dịch vụ LLM cho bước trích xuất và giúp tổ chức giữ dữ liệu nội bộ trong môi trường do mình quản lý.
+
+Để hỗ trợ văn bản có cấu trúc thông tin khác nhau, hệ thống còn có phương án hybrid: GPT 5.5 đề xuất schema từ một đoạn ngắn, còn GLiNER2 đọc toàn văn và điền các bản ghi cục bộ. Schema được xác định theo nội dung thay vì cố định một danh sách cột duy nhất. Phương án này giảm lượng văn bản cần gửi cho GPT, nhưng đoạn trích vẫn được xử lý bởi dịch vụ bên ngoài; không có số đo token hoặc chi phí tiền trong thực nghiệm.
+
+Đánh giá sử dụng RotoWire, gồm báo cáo bóng rổ tiếng Anh và bảng tham chiếu. Trong điều kiện oracle schema tham chiếu, GLiNER2 đạt fact micro F1 44,53\% trên 200 mẫu test, với độ trễ trung bình 3,620 giây/bài; GPT nhận cùng schema đạt F1 68,68\%. Hybrid đạt precision 46,03\%, recall 17,59\% và F1 25,46\% trên 200 mẫu test; F1 của GPT trực tiếp trên cùng 200 mẫu là 9,27\% theo bộ chấm cố định. Độ trễ hybrid trung bình là 12,020 giây/bài. Kết quả xác nhận khả năng trích xuất cục bộ và cho thấy tiềm năng của cách kết hợp schema động; hiệu quả trên các miền văn bản khác cần được đánh giá riêng.
+
+\noindent\textbf{Từ khóa:} GLiNER2, trích xuất thông tin, xử lý cục bộ, schema động, hybrid, RotoWire.
+\clearpage\setcounter{tocdepth}{2}\tableofcontents
+\clearpage\listoffigures\listoftables
+\clearpage\pagenumbering{arabic}
+\input{sections/01_dataset}
+\input{sections/02_gliner2}
+\input{sections/03_experiments}
+\clearpage
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+\begin{thebibliography}{2}
+\bibitem{t2t} Xueqing Wu, Jiacheng Zhang và Hang Li (2022). \textit{Text-to-Table: A New Way of Information Extraction}. ACL, tr. 2518--2533. \url{https://aclanthology.org/2022.acl-long.180/}.
+\bibitem{gliner} Urchade Zaratiana, Gil Pasternak, Oliver Boyd, George Hurn-Maloney và Ash Lewis (2025). \textit{GLiNER2: An Efficient Multi-Task Information Extraction System with Schema-Driven Interface}. EMNLP System Demonstrations, tr. 130--140. \url{https://aclanthology.org/2025.emnlp-demos.10.pdf}.
+\end{thebibliography}
+\end{document}

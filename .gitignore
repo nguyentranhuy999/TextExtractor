@@ -2,3 +2,17 @@ Code/.env
 __pycache__/
 *.pyc
 .DS_Store
+.venv/
+.pytest_cache/
+.cache/
+data/raw/
+data/source_inspection/
+outputs/
+*.egg-info/
+.env
+Docs/SPEC.md
+Paper/*
+tmp/
+:memory:.ses
+*.ses
+Docs/Report/archive/

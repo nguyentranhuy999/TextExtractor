@@ -1,0 +1,72 @@
+\section{Giới thiệu về tập dữ liệu}
+\subsection{Động lực: trích xuất cục bộ và sử dụng dữ liệu nội bộ}
+Trong nhiều tổ chức, thông tin phục vụ công việc được lưu dưới dạng báo cáo, hồ sơ, mô tả sản phẩm hoặc thư trao đổi. Để tìm kiếm, tổng hợp và phân tích, các tài liệu này cần được chuyển thành bản ghi có cấu trúc. Nếu giao toàn bộ việc đọc và tạo bảng cho một LLM chạy trên dịch vụ bên ngoài, nội dung văn bản phải được truyền tới dịch vụ đó và việc xử lý phụ thuộc vào tài nguyên suy luận của nhà cung cấp.
+
+Dự án lựa chọn GLiNER2 để thực hiện phần trích xuất ngay trên máy tính của người dùng. Với trọng số đã được tải và schema được cung cấp, mô hình chạy bằng CPU cục bộ; văn bản và bảng kết quả có thể được giữ trong môi trường nội bộ. Trong cấu hình này, bước trích xuất không cần gọi một dịch vụ LLM, nhờ đó không phát sinh token dịch vụ LLM cho từng tài liệu. GLiNER2 vẫn có quá trình token hóa và sử dụng tài nguyên tính toán tại máy; lợi ích được nhấn mạnh là giảm phụ thuộc vào suy luận thuê ngoài.
+
+Khả năng chạy cục bộ tạo điều kiện kiểm soát dữ liệu tốt hơn: tổ chức không cần gửi nội dung tài liệu cho bên thứ ba để điền các trường đã xác định. Tổ chức có thể chủ động lựa chọn nơi lưu văn bản, nơi lưu kết quả và quyền truy cập trong môi trường triển khai của mình.
+
+Một yêu cầu khác là hỗ trợ nhiều loại văn bản có các trường thông tin khác nhau. Dự án sử dụng thêm phương án hybrid: GPT đề xuất schema theo nội dung đoạn trích, sau đó GLiNER2 áp dụng schema đó lên toàn bài. Ví dụ, cùng luồng xử lý có thể được thiết kế để nhận các trường của báo cáo thể thao, mô tả sản phẩm hoặc hồ sơ nhân sự. Các ví dụ này minh họa khả năng mở rộng của thiết kế; thực nghiệm trong báo cáo mới kiểm chứng trên văn bản bóng rổ tiếng Anh.
+
+\subsection{Hai chế độ sử dụng và phạm vi dữ liệu gửi đi}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{3.15cm}Y Y@{}}
+\toprule
+\textbf{Tiêu chí} & \textbf{GLiNER2 local} & \textbf{Hybrid GPT + GLiNER2}\\\midrule
+Nguồn schema & Người dùng hoặc ứng dụng cung cấp. & GPT đề xuất từ đoạn văn bản ngắn.\\
+Phần điền dữ kiện & GLiNER2 xử lý toàn văn trên máy. & GLiNER2 xử lý toàn văn trên máy.\\
+Văn bản gửi dịch vụ LLM & Không cần gửi để suy luận. & Có gửi đoạn trích cho GPT.\\
+Sử dụng token dịch vụ LLM & Không cần cho bước trích xuất. & Cần cho yêu cầu tạo schema; không dùng GPT để điền toàn bảng.\\
+Tình huống phù hợp về thiết kế & Bộ trường đã biết; ưu tiên giữ tài liệu tại chỗ. & Loại thông tin thay đổi; cần đề xuất bộ trường theo nội dung.\\
+\bottomrule
+\end{tabularx}
+\caption{Hai chế độ xử lý và ranh giới dữ liệu. Lợi ích về token là phân tích thiết kế, chưa được đo định lượng.}
+\label{tab:modes}
+\end{table}
+
+Hybrid chỉ gửi một đoạn giữa nguyên văn, tối đa 10\% số từ và không quá 80 từ của bài. Cách phân công này làm giảm lượng nội dung văn bản gửi tới GPT so với yêu cầu GPT đọc toàn bài. Tuy nhiên, số từ không bằng số token và yêu cầu còn chứa lời nhắc cùng mô tả định dạng; báo cáo không suy ra một tỷ lệ tiết kiệm token hoặc tiền cụ thể. Đoạn trích cũng có thể chứa dữ liệu nhạy cảm, nên hybrid không có cùng mức giữ kín nội dung như cấu hình hoàn toàn cục bộ.
+
+\subsection{Bài toán text-to-table và nguồn RotoWire}
+Text-to-table là bài toán tạo một hoặc nhiều bảng thể hiện nội dung của văn bản, bao gồm xác định trường và điền thông tin tương ứng \cite{t2t}. Trong dự án, đầu vào là văn bản tiếng Anh và đầu ra là bảng dữ liệu, chưa bao gồm bước sinh truy vấn SQL. Để đánh giá khả năng trích xuất, mỗi dự đoán được đối chiếu với bảng tham chiếu, còn gọi là gold.
+
+RotoWire được chọn vì các bài tường thuật bóng rổ chứa nhiều đối tượng và thống kê đan xen: tên cầu thủ, tên đội, điểm số, rebounds, assists, thành tích ném và tỷ số trận. Đây là điều kiện phù hợp để kiểm tra không chỉ việc tìm con số mà còn việc gắn con số vào đúng người, đúng thuộc tính và đúng phạm vi thời gian.
+
+Dự án sử dụng bản chuyển thể thuộc nguồn \code{xqwu/text-to-table}, phần RotoWire. Văn bản và bảng tương ứng được đọc theo cặp, giữ nguyên liên kết giữa nội dung bài và nhãn tham chiếu. Phiên bản dữ liệu được cố định bằng revision và băm tệp để các phép so sánh dùng cùng đầu vào.
+
+\subsection{Cấu trúc dữ liệu và ví dụ minh họa}
+Bảng tham chiếu gồm hai nhóm chính. Bảng cầu thủ có mỗi hàng là một cầu thủ và các cột là thống kê của người đó. Bảng đội mô tả số liệu gắn với đội, có thể gồm điểm, thành tích hoặc thống kê theo phạm vi của trận. Tên hàng là định danh đối tượng; tên cột là thuộc tính cần trích xuất. Hai thành phần này có vai trò khác nhau.
+
+Xét đoạn minh họa không thuộc các mẫu tính điểm:
+\begin{quote}
+Alex scored 24 points and grabbed seven rebounds. Ben added 18 points.
+\end{quote}
+Một bảng phù hợp với đoạn này có dạng:
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lrr@{}}
+\toprule\textbf{Cầu thủ} & \textbf{Points} & \textbf{Rebounds}\\\midrule
+Alex & 24 & 7\\
+Ben & 18 & Chưa có thông tin\\
+\bottomrule
+\end{tabular}
+\caption{Ví dụ chuyển văn bản thành bảng; ô chưa có thông tin không được tự điền 0.}
+\end{table}
+
+Trong ví dụ, lấy được số 24 nhưng gắn vào Ben hoặc vào cột rebounds vẫn là sai dữ kiện. Thực tế RotoWire còn có các trường hợp khó hơn: tên người ở câu trước, số liệu ở câu sau; thống kê hiệp đầu cạnh tổng cả trận; thành tích của trận trước cạnh trận hiện tại; tổng điểm của nhiều người trong cùng một câu. Vì vậy, việc đánh giá cần xét đồng thời đối tượng, trường và giá trị.
+
+\subsection{Phân chia dữ liệu sử dụng trong dự án}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule\textbf{Hạng mục} & \textbf{Nguồn có sẵn} & \textbf{Số mẫu sử dụng} & \textbf{Seed}\\\midrule
+Validation & 727 & 30 & 43\\
+Test & 728 & 200 & 42\\
+\bottomrule
+\end{tabularx}
+\caption{Quy mô dữ liệu được cố định trong manifest.}
+\end{table}
+
+Tổng số dữ kiện gold sau chuẩn hóa là 853 trên 30 mẫu validation và 6156 trên 200 mẫu test. Validation được dùng để lựa chọn cấu hình GLiNER2; sau đó cấu hình được giữ cố định khi chạy test. Tất cả kết quả chính trong báo cáo đều dùng cùng 200 mẫu test, gồm GLiNER2 local, GPT với schema cho trước, hybrid và GPT tạo bảng trực tiếp. Danh sách ID, nội dung văn bản và gold được đối chiếu để bảo đảm các phép so sánh dùng cùng dữ liệu.
+
+Chương trình kiểm tra trùng văn bản nhưng chưa có khóa ghép đủ tin cậy để loại sạch các bài cùng trận giữa các phần dữ liệu. Gold và từ điển chuẩn hóa được giữ cố định khi tính điểm. Những yếu tố này được xét khi diễn giải kết quả, đặc biệt là khả năng áp dụng sang dữ liệu ngoài tập đánh giá.

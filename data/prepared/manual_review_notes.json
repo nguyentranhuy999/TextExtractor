@@ -1,0 +1,186 @@
+{
+  "entries": [
+    {
+      "categories": "Nghi ngờ nhãn, nhầm loại số",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Gold gán Cavaliers field-goal percentage=40 trong khi văn bản có `(40)` ở vị trí thành tích series; không phát biểu tỷ lệ ném 40%. Gold gán JR Smith steals=2/3-pointers made=2 trong đoạn nói về flagrant-2; Love/Olynyk rebounds=1 không có thống kê tương ứng.",
+      "original_index": 6,
+      "reviewer": "Codex",
+      "sample_id": "test-0006-303f9853ba73"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, thiếu dữ kiện",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Hornets points in 1st quarter=19 không được phát biểu; số 19 là điểm Wall/Zeller. Văn bản có John Wall 3 rebounds nhưng gold không có ô này.",
+      "original_index": 167,
+      "reviewer": "Codex",
+      "sample_id": "test-0167-eca5dabc4ed0"
+    },
+    {
+      "categories": "Sai đối tượng trong nhãn, nội dung nguồn không nhất quán",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Văn bản gán 3-of-9 cho Rodney Hood, gold lại gán FG made=3/attempted=9 cho Alec Burks. Bài mở đầu ghi Sacramento Kings nhưng sau đó nói New Orleans, Davis/Cousins; cần rà soát chính văn bản.",
+      "original_index": 541,
+      "reviewer": "Codex",
+      "sample_id": "test-0541-4a148cb72f1b"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, thiếu dữ kiện",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Greg Monroe được nêu 11 points; gold thêm nhiều thống kê giá trị 1 không có bằng chứng. Jonas Valanciunas 13 rebounds và Raptors 51% FG được nêu nhưng thiếu trong gold.",
+      "original_index": 11,
+      "reviewer": "Codex",
+      "sample_id": "test-0011-90071824bea6"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, nguồn mâu thuẫn",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Carmelo Anthony có một số ô FT made/attempted, offensive rebounds, turnovers=2 không được phát biểu; Porzingis 3-pointers made/turnovers=2 tương tự. Bài vừa nói Rose+Porzingis=53 vừa ghi riêng 28 và 24; không suy diễn sửa số.",
+      "original_index": 676,
+      "reviewer": "Codex",
+      "sample_id": "test-0676-952d635f7605"
+    },
+    {
+      "categories": "Thiếu nhãn, phạm vi số tổng hợp",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Thống kê chính Drummond được gán đúng theo văn bản. Paul George 7 rebounds và 5 assists xuất hiện nhưng thiếu trong gold. Đoạn `220 run` có dấu hiệu lỗi biên tập; các tổng của bộ ba dự bị không được chia cho từng người.",
+      "original_index": 225,
+      "reviewer": "Codex",
+      "sample_id": "test-0225-75ac4d81dbba"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, biến thể/lỗi tên",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Bucks points in 4th quarter=36 không được phát biểu; 36 là điểm Jabari Parker. Văn bản ghi Jared Bayless, gold Jerryd Bayless; cần phân biệt lỗi tên nguồn với mô hình. Một số số liệu ném và 17 rebounds của Giannis có trong bài nhưng thiếu gold.",
+      "original_index": 591,
+      "reviewer": "Codex",
+      "sample_id": "test-0591-bcb50c8436d6"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, nhầm đơn vị/phạm vi",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Hawks three-point percentage=19 và Celtics Q1 points=19 không được nêu; 19 là số free-throw attempts của Boston. Nhiều ô giá trị 1/3 ở cầu thủ không có phát biểu thống kê tương ứng.",
+      "original_index": 552,
+      "reviewer": "Codex",
+      "sample_id": "test-0552-e281f97f553b"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, số tổng hợp, phạm vi thời gian",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Bulls assists=27 không có phát biểu; 27 là số FT made của đội và điểm Gasol. Gold Mirotic points=17 có thể nhầm tổng Butler+Mirotic ở hiệp cuối thành điểm cá nhân. Harden turnovers=2 được nói riêng trong hiệp 4, cần phân biệt tổng trận.",
+      "original_index": 670,
+      "reviewer": "Codex",
+      "sample_id": "test-0670-7aa537e31a10"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, nhầm đối tượng/thuộc tính",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Bulls Q1 points=22 không được nêu, 22 là điểm Carter-Williams. Carter-Williams fouls=3/turnovers=4, Bayless fouls=3 và một số rebound/3PA của Butler không có bằng chứng tương ứng.",
+      "original_index": 619,
+      "reviewer": "Codex",
+      "sample_id": "test-0619-776ab6291201"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, thiếu dữ kiện",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "CJ McCollum FG attempted=22 không được phát biểu; văn bản nói 22 points. Plumlee 10 offensive rebounds, Nowitzki 16-of-26 và 3 three-pointers xuất hiện nhưng thiếu gold.",
+      "original_index": 551,
+      "reviewer": "Codex",
+      "sample_id": "test-0551-c0a69e49e549"
+    },
+    {
+      "categories": "Sai đối tượng/phạm vi trong nhãn, thiếu dữ kiện",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Rondo FG attempted=10 có vẻ lấy từ 10 lần ném đầu của Cousins. Một số ô giá trị 1 cho Leonard/Green không được phát biểu. Cousins 22 points và 8-of-23 có trong bài nhưng phần gold cầu thủ chỉ giữ 10 rebounds.",
+      "original_index": 108,
+      "reviewer": "Codex",
+      "sample_id": "test-0108-fbde24de15bb"
+    },
+    {
+      "categories": "Nhãn sai giá trị/thuộc tính",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Văn bản Embiid có `a block`, gold Blocks=2. Pacers Q2 points=25 không được phát biểu; 25 là điểm Embiid. Jeff Teague FG made=5 không được nêu.",
+      "original_index": 659,
+      "reviewer": "Codex",
+      "sample_id": "test-0659-e43500406321"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, sai đối tượng",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Gold Kevin Love defensive rebounds=12 không được phát biểu; 12 là tổng rebounds của Thompson, Love có 13 tổng rebounds. FGA=5 của Fournier/Payton không có bằng chứng thống kê; bài nói starting five.",
+      "original_index": 230,
+      "reviewer": "Codex",
+      "sample_id": "test-0230-2e31b3b37ef5"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, phạm vi thời gian",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "DeRozan turnovers=3 không được phát biểu; `three straight` nói chuỗi trận thua cần tránh. Một số thời gian và chỉ số ném có trong bài nhưng thiếu gold.",
+      "original_index": 637,
+      "reviewer": "Codex",
+      "sample_id": "test-0637-1821abdaad53"
+    },
+    {
+      "categories": "Sai đối tượng trong nhãn, thiếu dữ kiện",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Perry Jones III minutes=31 không được phát biểu; 31 minutes thuộc Steven Adams. Tổng tỷ số 102–91 trong bài không có cột Total points ở gold.",
+      "original_index": 638,
+      "reviewer": "Codex",
+      "sample_id": "test-0638-1b0958352c90"
+    },
+    {
+      "categories": "Nội dung nguồn không nhất quán, nghi ngờ nhãn/tên",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Bài nói Wizards–Magic nhưng có Celtics/Boston giữa bài; `Paul Piece` khác Paul Pierce trong gold. Nhiều ô giá trị 1 và Kyle O'Quinn rebounds=6 không được phát biểu riêng rõ ràng.",
+      "original_index": 394,
+      "reviewer": "Codex",
+      "sample_id": "test-0394-e87e9e47da5a"
+    },
+    {
+      "categories": "Nghi ngờ nhãn, thiếu dữ kiện",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Mo Williams personal fouls=5 không được phát biểu; `all five starters` không phải số lỗi cá nhân. Hornets 16 turnovers xuất hiện nhưng thiếu trong bảng đội.",
+      "original_index": 701,
+      "reviewer": "Codex",
+      "sample_id": "test-0701-0f5ccb19131b"
+    },
+    {
+      "categories": "Chưa phát hiện lỗi ở các ô đã đối chiếu",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Các ô gold về thành tích, tỷ số và Spurs turnovers=14 đều có bằng chứng trong văn bản. Không có thống kê cá nhân rõ nên bảng cầu thủ rỗng là phù hợp trong phạm vi rà soát này.",
+      "original_index": 69,
+      "reviewer": "Codex",
+      "sample_id": "test-0069-104100335ae2"
+    },
+    {
+      "categories": "Nhầm tổng với thành phần trong nhãn",
+      "human_verified": false,
+      "labels_changed": false,
+      "note": "Paul Millsap defensive rebounds=10 không được phát biểu; bài nêu 10 tổng rebounds. Gold đồng thời có total rebounds=10. Các thống kê chính của Schroder, Thomas và tỷ số được nêu rõ.",
+      "original_index": 606,
+      "reviewer": "Codex",
+      "sample_id": "test-0606-ff5842541825"
+    }
+  ],
+  "labels_changed": false,
+  "status": "codex_gold_review_complete_human_confirmation_pending"
+}

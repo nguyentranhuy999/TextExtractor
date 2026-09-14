@@ -1,0 +1,55 @@
+dataset:
+  source: xqwu/text-to-table
+  revision: 58b424d1076bc8752d9857745bfd01e7c1a65c19
+  subset: rotowire
+  raw_dir: data/raw
+  prepared_dir: data/prepared
+  expected_test_count: 728
+  test_size: 200
+  sample_seed: 42
+  validation_size: 30
+  validation_seed: 43
+arms:
+- A_GLINER_KNOWN
+- A_GPT_KNOWN
+- B_HYBRID_SHORT
+- B_GPT_DIRECT
+gliner:
+  model: fastino/gliner2-base-v1
+  revision: 8437ba583a733d87f56ae902f3b197934eedd58e
+  device: cpu
+  dtype: float32
+  batch_size: 1
+  cpu_threads: 4
+  threshold: 0.5
+  overlap_tokens: 64
+  cache_dir: .cache/huggingface
+  schema_descriptions: compact
+  schema_labels: semantic
+  table_execution: separate
+gpt:
+  execution_mode: codex_cli
+  auth_mode: chatgpt
+  model: gpt-5.5
+  codex_cli_version: 0.154.0-alpha.6.2
+  reasoning_effort: low
+  fresh_session_per_task: true
+  tool_policy: no_external_tools
+  concurrency: 1
+  timeout_seconds: 300
+  max_attempts: 3
+  context_sha256: 1ccb4e2278930ba99f6ba395bd44a44e6922014642e7c6e42e930f0db867b03d
+snippet:
+  strategy: center_contiguous
+  count_unit: whitespace_words
+  ratio: 0.1
+  max_words: 80
+evaluation:
+  bootstrap_repetitions: 2000
+  bootstrap_seed: 2026
+  primary_metric: fact_micro_f1
+run:
+  output_root: outputs
+  repetitions: 1
+  order_seed: 44
+  resume: true

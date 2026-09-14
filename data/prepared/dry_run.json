@@ -1,0 +1,12 @@
+{
+  "execution_mode": "codex_cli",
+  "expected_codex_tasks": 600,
+  "gliner_document_jobs": 400,
+  "manifest_sha256": "f536f2d354d941680f986769b1b999d8b294bec849e09f883e47e9dd964f8a4d",
+  "model_requests": 0,
+  "n_jobs": 800,
+  "n_samples": 200,
+  "note": "Không suy luận; số đoạn GLiNER2 phụ thuộc schema và giới hạn checkpoint.",
+  "simulated": false,
+  "status": "dry_run"
+}

@@ -1,0 +1,27 @@
+{
+  "report_revision": "2026-09-15-test200",
+  "scope": "Final configuration only; all four methods on identical 200 test IDs, comparisons separated by schema access",
+  "selected_rows": {
+    "local": "separate on test",
+    "known_gpt": "A_GPT_KNOWN",
+    "direct": "B_GPT_DIRECT"
+  },
+  "sources": {
+    "outputs/gliner-test-v1/metrics.json": "1ff23eb5cab2f606d94ad97da39d6723e994cd8fb582a4898f724a200f2dc671",
+    "outputs/gliner-test-v1/historical_comparison.json": "5bfcbe04e292d819420d559052e8b5718706aab885a17423eab2fdf5fae23132",
+    "outputs/gliner-test-v1/protocol.lock.json": "6694916cbcf9f52fa6a29c9098a6f8d67965c50ae4360838ba47a295bbd8aede",
+    "outputs/gliner-test-v1/verification.json": "f6d5edfef37ef4041c5dcdf1f981b33cc3a3c624594e086968094c32adc10dfa",
+    "outputs/gliner-validation-v1/selected_config.yaml": "811f69c6ec676e3f81502243a8dfe69adb676f662e7a50a2542405c4f0935989",
+    "outputs/rotowire-codex-main-v1/summary.csv": "b7fb11107e41a9091bfc10542d881cc9b6e807308a4aef4a75aa0d88de3beded",
+    "outputs/hybrid-test-v3/metrics.json": "6e16421243dfc992400e947bce7dba6d572ea266cb52dcb040855abb47b0d795",
+    "outputs/hybrid-test-v3/historical_comparison.json": "b5037ea22099b5ad903c017552e7f596c9fd1bd5ee16a885d9999423a70ceb2f",
+    "outputs/hybrid-test-v3/diagnostics.json": "2edec2b84224f495aa2747fef1a741b98b1a8db7442b06ce0158b44145c1e77d",
+    "outputs/hybrid-test-v3/table_breakdown.json": "b21e1ffff7147b5e169b12344c28cb8887cfc7a4da20f37a2783e94ba6eeaab8",
+    "data/prepared/sample_manifest.json": "55b672cf680ed1550a98225ac50e016aab470ecd1bb77e6155277b55f5d57683",
+    ".venv/lib/python3.11/site-packages/gliner2/model.py": "b459e043fded05275f88368fb879705df6d1e2c70fd1ac9aa89dafd5c165ff2c",
+    ".venv/lib/python3.11/site-packages/gliner2/layers.py": "ad2b8d7745969c76978e1d6ec1f134c16532bfd4dfe9ee7f7a5c66600ffe68b5",
+    ".venv/lib/python3.11/site-packages/gliner2/processor.py": "f0c118551215df2491939be9e32135971857e69cacbf7f2d859342a0c6ac123d",
+    ".venv/lib/python3.11/site-packages/gliner2/inference/engine.py": "daf87aa2753fa7445d6ad20c1b8488af744cb28b17a6d74d407b773ac92b4e7a",
+    ".cache/gliner2-base-v1/8437ba583a733d87f56ae902f3b197934eedd58e/config.json": "33d8aa009deed4b5435d162e08b5a720b252a0084e59d30d366b37da8c0193c5"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "environment": {
+    "codex_cli_version": "0.154.0-alpha.6.2",
+    "cpu": "arm",
+    "cpu_threads": 4,
+    "execution_mode": "codex_cli",
+    "git_commit": "91986b25be8910d090252a719d176865bd7cacc3",
+    "logical_cpus": 8,
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.14 (main, Oct  9 2025, 16:16:55) [Clang 17.0.0 (clang-1700.3.19.1)]",
+    "pythonhashseed": "0",
+    "ram_bytes": 17179869184,
+    "service_tier": "Codex default; internal server timings unknown",
+    "utc": "2026-09-13T23:40:26.700638+00:00",
+    "versions": {
+      "PyYAML": "6.0.3",
+      "gliner": "0.2.21",
+      "gliner2": "1.2.4",
+      "huggingface-hub": "0.36.2",
+      "numpy": "2.4.6",
+      "openai": "2.28.0",
+      "pydantic": "2.12.5",
+      "rotowire-bench": null,
+      "tokenizers": "0.21.4",
+      "torch": "2.6.0",
+      "transformers": "4.51.3"
+    }
+  },
+  "gliner": {
+    "status": "not_loaded"
+  },
+  "gpt": {
+    "reason": "Offline validation does not invoke Codex",
+    "status": "not_verified"
+  },
+  "utc": "2026-09-13T23:40:26.693216+00:00"
+}

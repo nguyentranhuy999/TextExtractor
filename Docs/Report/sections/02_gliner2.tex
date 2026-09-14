@@ -1,0 +1,121 @@
+\chapterstart{Kiến trúc và cách hoạt động GLiNER2}
+\subsection{Tổng quan mô hình}
+GLiNER2 là mô hình trích xuất thông tin theo schema, phát triển từ hướng tiếp cận dùng Transformer encoder. Công trình giới thiệu khả năng nhận diện thực thể, phân loại văn bản và trích xuất cấu trúc trong cùng một hệ thống \cite{gliner}. Dự án tập trung vào trích xuất cấu trúc: mỗi loại đối tượng có nhiều bản ghi, mỗi bản ghi gồm định danh và các thuộc tính.
+
+Checkpoint được sử dụng là \code{fastino/gliner2-base-v1}. Cấu hình trọng số cục bộ chỉ định backbone \code{microsoft/deberta-v3-base}, cơ chế biểu diễn các đoạn văn bản có độ rộng tối đa tám từ theo bộ xử lý, và lớp tạo biểu diễn bản ghi \code{count_lstm_v2}. Thư viện đang dùng là GLiNER2 1.2.4. Các mô tả kỹ thuật dưới đây được đối chiếu trực tiếp với cấu hình và mã thư viện dùng trong dự án, không lấy thông số của phiên bản khác để thay thế.
+
+Một đặc điểm quan trọng là schema cũng là đầu vào của mô hình. Khi thay tên trường và mô tả, mô hình nhận một yêu cầu trích xuất khác mà không bắt buộc thay kiến trúc mạng. Chính đặc điểm này tạo cơ sở cho hai chế độ: nhận schema từ ứng dụng hoặc nhận schema do GPT đề xuất.
+
+\subsection{Mã hóa đồng thời schema và văn bản}
+Schema khai báo loại bản ghi và các thuộc tính cần lấy. Ví dụ, với bài tường thuật bóng rổ, cấu trúc có thể là \textit{player}, gồm \textit{name}, \textit{points} và \textit{rebounds}. Bộ xử lý biến cấu trúc này thành chuỗi có các ký hiệu phân biệt thành phần schema, rồi đặt cùng văn bản để đưa vào encoder. Dạng khái quát là
+\begin{equation}
+X = \operatorname{serialize}(S)\oplus[\mathrm{SEP}]\oplus D,
+\end{equation}
+trong đó $S$ là schema, $D$ là văn bản và $\oplus$ là phép ghép chuỗi đầu vào.
+
+Encoder tạo các vector ngữ cảnh cho cả tên trường và các từ của văn bản. Nhờ đọc cùng nhau, biểu diễn của một trường như \textit{points} có thể được xét trong ngữ cảnh thống kê cầu thủ, còn các cụm số trong văn bản được biểu diễn với thông tin xung quanh. Chương trình giữ tên trường có nghĩa và mô tả ngắn về nội dung, kiểu giá trị và đơn vị để yêu cầu trích xuất được thể hiện rõ.
+
+Việc dùng encoder có nghĩa mô hình tính biểu diễn của đầu vào trước khi chấm điểm các đoạn ứng viên. Ở đường trích xuất đang sử dụng, GLiNER2 chọn các đoạn của văn bản rồi phần mềm tổ chức chúng thành cấu trúc đầu ra; mô hình không cần sinh toàn bộ bảng bằng một chuỗi token văn bản tự hồi quy như cách một LLM tạo JSON.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=7mm and 9mm, box/.style={draw=accent,rounded corners,fill=soft,align=center,text width=5.55cm,minimum height=13mm,font=\small},wide/.style={box,text width=12.1cm},arr/.style={-{Latex},thick,draw=accent}]
+\node[wide] (input) {Schema có tên trường và mô tả + văn bản đầu vào};
+\node[wide,below=of input] (encoder) {Tokenizer và Transformer encoder DeBERTa-v3-base\\Tạo biểu diễn ngữ cảnh cho schema và văn bản};
+\node[box,below left=8mm and -5.55cm of encoder] (span) {Nhánh văn bản\\Biểu diễn các đoạn ứng viên};
+\node[box,right=of span] (count) {Nhánh schema\\Dự đoán số bản ghi $K$};
+\node[box,below=of count] (instance) {Tạo biểu diễn riêng\\cho mỗi cặp bản ghi--thuộc tính};
+\node[wide,below=23mm of span,xshift=3.275cm] (score) {Chấm điểm tương thích đoạn--thuộc tính--bản ghi\\Sigmoid, ngưỡng chọn và giải mã};
+\node[wide,below=of score] (output) {Các bản ghi có cấu trúc\\Định danh và giá trị trích từ văn bản};
+\draw[arr](input)--(encoder);\draw[arr](encoder.south)-|(span.north);\draw[arr](encoder.south)-|(count.north);\draw[arr](count)--(instance);\draw[arr](span.south)--(score.north -| span.south);\draw[arr](instance.south)--(score.north -| instance.south);\draw[arr](score)--(output);
+\end{tikzpicture}
+\caption{Các thành phần suy luận của GLiNER2 cho trích xuất cấu trúc, giản lược từ mã thư viện dùng trong dự án.}
+\label{fig:model}
+\end{figure}
+
+\subsection{Biểu diễn các đoạn giá trị trong văn bản}
+Một đoạn liên tiếp của văn bản, gọi là \textit{span}, có thể là tên người, tên đội, một con số hoặc một cụm giá trị. Từ biểu diễn ngữ cảnh, lớp span tạo vector cho các cặp vị trí bắt đầu và kết thúc hợp lệ. Trong checkpoint đang dùng, chương trình xét các đoạn có độ rộng không quá tám từ theo cách tách từ của bộ xử lý.
+
+Với ví dụ ``Alex scored 24 points'', các ứng viên bao gồm tên Alex, số 24 và các cụm liên tiếp khác. Mục tiêu không phải lấy mọi ứng viên mà chấm mức phù hợp của từng ứng viên với thuộc tính đang xét. Cùng một số 24 có thể đạt điểm cao cho trường points nhưng không phù hợp với trường định danh.
+
+Giới hạn độ rộng span và giới hạn chiều dài đầu vào giúp giới hạn lượng tính toán, đồng thời tạo ràng buộc đối với văn bản dài hoặc giá trị kéo dài. Ở cấp chương trình, toàn bài được chia thành các cửa sổ phù hợp rồi ghép kết quả, thay vì coi một lần gọi mô hình là đã bao phủ mọi văn bản.
+
+\subsection{Dự đoán số bản ghi và phân biệt các đối tượng}
+Một schema có thể tương ứng với nhiều đối tượng trong cùng văn bản. Nếu chỉ tìm mọi tên người và mọi con số một cách độc lập, hệ thống chưa biết ghép giá trị nào cho hàng nào. Đường trích xuất cấu trúc của GLiNER2 sử dụng một bước dự đoán số bản ghi và biểu diễn thuộc tính riêng cho từng bản ghi để giải quyết nhiệm vụ này.
+
+Cụ thể, vector đại diện cấu trúc được đưa qua một mạng MLP để tạo điểm cho số lượng bản ghi. Mã thư viện có 20 lớp, tương ứng số lượng từ 0 đến 19; lúc suy luận, chương trình lấy lớp có điểm lớn nhất:
+\begin{equation}
+\widehat K=\underset{k\in\{0,\ldots,19\}}{\operatorname{argmax}}\;c_k.
+\end{equation}
+Đây là dự đoán của mô hình trong một đơn vị xử lý, không phải số hàng lấy từ bảng gold. Tài liệu dài có thể được xử lý qua nhiều cửa sổ nên giới hạn này không phải giới hạn cố định 19 hàng cho toàn bộ tài liệu sau khi ghép.
+
+Sau đó, mô-đun \code{count_lstm_v2} tạo các vector thuộc tính có điều kiện theo vị trí bản ghi. Trong bản mã thực tế, thành phần này dùng embedding vị trí đã học và GRU, mặc dù tên lớp có chữ LSTM. Với $m$ thuộc tính và $\widehat K$ bản ghi, đầu ra cung cấp biểu diễn cho $\widehat K\times m$ cặp bản ghi--thuộc tính.
+
+Nhờ đó, trường points của bản ghi thứ nhất và trường points của bản ghi thứ hai có hai vector riêng để đối chiếu với văn bản. Trong ví dụ Alex và Ben, mô hình có thể lựa chọn giá trị 24 cho một hàng và 18 cho hàng còn lại. Cơ chế này hỗ trợ liên kết cấu trúc, nhưng việc gắn đúng ngữ nghĩa vẫn cần được kiểm chứng bằng kết quả thực nghiệm.
+
+\subsection{Chấm điểm và dựng cấu trúc đầu ra}
+Gọi $v_{ij}$ là vector của đoạn từ vị trí $i$ đến $j$, và $u_{km}$ là vector thuộc tính $m$ ở bản ghi $k$. Phép tính trong đường suy luận có thể viết gọn thành
+\begin{equation}
+p_{k,m,i,j}=\sigma\!\left(v_{ij}^{\mathsf T}u_{km}\right),
+\end{equation}
+trong đó $\sigma$ là hàm sigmoid. Điểm này được dùng cùng ngưỡng và quy tắc giải mã để lấy các đoạn tương ứng. Không diễn giải trực tiếp điểm sigmoid như một xác suất đúng đã được hiệu chỉnh cho dữ liệu RotoWire.
+
+Trong cấu hình dự án, ngưỡng là 0,5. Khóa định danh được khai báo kiểu chuỗi, còn thuộc tính có thể giữ danh sách giá trị. Cách lưu danh sách bảo toàn những trường hợp có nhiều giá trị trích được; bước ghép không chọn một giá trị chỉ vì nó giống gold. Dữ kiện được chuẩn hóa thành bộ gồm loại bảng, đối tượng, trường và giá trị để chấm sau suy luận.
+
+Mô hình lấy các đoạn xuất hiện trong văn bản không đồng nghĩa mọi ô đều đúng. Một số có thể thuộc cầu thủ khác, thuộc trận trước hoặc chỉ là thống kê một hiệp. Vì vậy, đánh giá cuối xét cả định danh và phạm vi trường, không chỉ kiểm tra con số có xuất hiện trong bài hay không.
+
+\subsection{Cách sử dụng GLiNER2 trong chương trình}
+Toàn bộ trọng số GLiNER2 được nạp một lần vào CPU và sử dụng lại cho các tài liệu. Cấu hình cuối giữ tên trường có nghĩa, mô tả gọn và thực hiện riêng từng bảng. Khi trích bảng cầu thủ, mô hình nhận schema cầu thủ cùng toàn văn; khi trích bảng đội, mô hình nhận schema đội cùng toàn văn.
+
+Ngân sách đầu vào gồm cả schema và văn bản. Giới hạn vận hành đã kiểm tra trong checkpoint dùng cho dự án là 512 token nội bộ. Adapter chọn các cửa sổ vừa giới hạn, ưu tiên biên câu khi có thể và giữ phần chồng lấn để giảm mất ngữ cảnh ở biên. Mọi cửa sổ cần thiết đều được chạy; thời gian ghi nhận gồm tổng xử lý các bảng và các đoạn.
+
+Kết quả từ nhiều cửa sổ được ghép theo định danh chuẩn hóa. Giá trị trùng được loại lặp; giá trị khác nhau vẫn được giữ như xung đột cần chấm hoặc xem lại. Sau khi nạp trọng số, các bước này đều thực hiện tại máy, phù hợp với mục tiêu xử lý dữ liệu nội bộ mà không gọi LLM để điền từng ô.
+
+\subsection{Kết hợp GPT để đề xuất schema động}
+\subsubsection{Vai trò của GPT}
+Khi loại văn bản thay đổi, bộ trường hữu ích cũng thay đổi. Hybrid dùng GPT cho bước đọc hiểu đoạn trích và đề xuất schema, còn GLiNER2 đảm nhiệm phần trích xuất dữ kiện. GPT chỉ trả tên bảng, tên thuộc tính, mô tả, kiểu giá trị và đơn vị nếu có căn cứ; không đưa tên đối tượng cụ thể hoặc giá trị quan sát được vào schema.
+
+Lời nhắc yêu cầu chỉ đề xuất trường có bằng chứng trong đoạn nhận được, phân biệt định danh với thuộc tính và giữ phạm vi của thống kê. Nếu đoạn không có đủ thông tin, schema rỗng được chấp nhận. Chương trình không tự bổ sung bộ cột phổ biến từ gold và không gửi toàn bài cho GPT để sửa đầu ra trong cấu hình hybrid này.
+
+\subsubsection{Chọn đoạn và luồng xử lý}
+Với $N$ từ được tách theo khoảng trắng, chương trình chọn
+\begin{equation}
+B=\min\left(80,\left\lfloor\frac{N}{10}\right\rfloor\right)
+\end{equation}
+từ liên tục ở giữa bài. Chỉ đoạn này được đưa vào phần dữ liệu văn bản của yêu cầu GPT; GLiNER2 vẫn đọc toàn bài. Lời nhắc và khung định dạng là phần riêng, không nằm trong tỷ lệ số từ nêu trên.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8mm and 10mm,box/.style={draw=accent,rounded corners,fill=soft,align=center,text width=5.5cm,minimum height=13mm,font=\small},arr/.style={-{Latex},thick,draw=accent}]
+\node[box] (full) {Toàn văn trên máy cục bộ};
+\node[box,right=of full,fill=white] (snippet) {Đoạn giữa tối đa 10\% số từ\\và không quá 80 từ};
+\node[box,below=of snippet,fill=white] (gpt) {Dịch vụ GPT 5.5\\Đề xuất schema từ đoạn trích};
+\node[box,below=of gpt] (schema) {Schema trả về máy\\Kiểm tra cấu trúc và thuộc tính};
+\node[box,left=of schema] (gliner) {GLiNER2 cục bộ\\Áp dụng schema lên toàn văn};
+\node[box,below=of gliner] (table) {Bảng kết quả trên máy};
+\draw[arr](full)--(snippet);\draw[arr](snippet)--(gpt);\draw[arr](gpt)--(schema);\draw[arr](schema)--(gliner);\draw[arr](full)--(gliner);\draw[arr](gliner)--(table);
+\end{tikzpicture}
+\caption{Luồng hybrid và ranh giới xử lý: đoạn trích được gửi tới GPT; toàn văn dùng cho GLiNER2 được xử lý cục bộ.}
+\label{fig:hybrid}
+\end{figure}
+
+Thiết kế chuyển phần tạo schema cho GPT giúp chương trình không bị buộc vào một danh mục cột duy nhất. Tuy vậy, chất lượng schema phụ thuộc thông tin có trong đoạn trích. Nếu trường cần thiết chưa được đề xuất, GLiNER2 không tự thêm trường đó trong giao thức hiện tại.
+
+\subsubsection{Khả năng mở rộng cho nhiều loại văn bản}
+Tầng mô hình trích xuất nhận schema làm đầu vào nên có thể tái sử dụng cùng cách gọi cho các loại bản ghi khác nhau. Bảng~\ref{tab:domains} minh họa cách thay schema khi thay loại tài liệu; các ví dụ không phải kết quả benchmark của dự án.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{3.2cm}p{2.5cm}Y@{}}
+\toprule\textbf{Loại văn bản} & \textbf{Loại bản ghi} & \textbf{Thuộc tính có thể cần trích}\\\midrule
+Báo cáo thể thao & Cầu thủ, đội & Points, rebounds, assists, thống kê đội.\\
+Mô tả sản phẩm & Sản phẩm & Tên, giá, nhãn hiệu, thông số được nêu.\\
+Hồ sơ nhân sự & Ứng viên & Tên, kỹ năng, kinh nghiệm, học vấn.\\
+Báo cáo doanh nghiệp & Tổ chức & Tên, chỉ tiêu được công bố, kỳ báo cáo.\\
+\bottomrule
+\end{tabularx}
+\caption{Ví dụ định hướng mở rộng bằng schema; mới có miền bóng rổ được đánh giá trong báo cáo.}
+\label{tab:domains}
+\end{table}
+
+Khi chuyển miền, phần chuẩn bị dữ liệu, lời nhắc, mô tả schema và tiêu chí chấm cũng cần được điều chỉnh. Bộ benchmark hiện có nhiều quy tắc dành cho RotoWire; chưa phải một ứng dụng đa miền đã được xác nhận độ chính xác. Lợi ích của hybrid ở đây là cấu trúc xử lý linh hoạt để phát triển theo hướng đó, trong khi phần điền dữ liệu tiếp tục dùng mô hình cục bộ.
