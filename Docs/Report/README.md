@@ -10,6 +10,8 @@ Thông tin bìa của bản báo cáo là ThS. Nguyễn Thị Thuỳ Linh và si
 
 Danh mục tài liệu tham khảo của bản PDF chỉ giữ hai bài báo học thuật về Text-to-Table và GLiNER2. Các số liệu nội bộ vẫn được trình bày trong phần thí nghiệm nhưng không được liệt kê như tài liệu tham khảo.
 
+Mã nguồn dự án: <https://github.com/nguyentranhuy999/TextExtractor>.
+
 Cả bốn phương pháp được đối chiếu trên **cùng 200 test**. Cấu hình local được chọn trước trên 30 validation rồi giữ cố định khi chạy test. GLiNER2 local và GPT trong điều kiện oracle nhận cùng tên bảng/trường lấy từ gold của từng bài, không nhận tên hàng hoặc giá trị gold; vì thế hai kết quả này chỉ cô lập bước điền dữ kiện, không phải cấu hình triển khai khi schema chưa biết. Hybrid và GPT trực tiếp phải tự xác định schema. Không diễn giải chênh lệch giữa hai nhóm như tác động riêng của mô hình. Token và tiền chưa được đo định lượng. Hybrid vẫn gửi đoạn trích cho GPT; tính linh hoạt đa miền là thiết kế có thể mở rộng, mới kiểm chứng trên RotoWire.
 
 ## Tệp chính

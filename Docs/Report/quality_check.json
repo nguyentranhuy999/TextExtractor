@@ -23,8 +23,9 @@
   "advisor": "ThS. Nguyễn Thị Thuỳ Linh",
   "student": "Nguyễn Trần Huy (23020378)",
   "bibliography_items": 2,
+  "source_code_url": "https://github.com/nguyentranhuy999/TextExtractor",
   "token_savings": "qualitative only; token/cost not measured",
   "hybrid_privacy": "excerpt sent to GPT; extraction local",
   "multi_domain": "design capability; benchmark only RotoWire",
-  "pdf_sha256": "897874d9e57d0188568411ec5ad66e1b39e9c67813580e6e7cc07daa7a78b7b6"
+  "pdf_sha256": "1f21246457b5b35235cf62e41ab24c499408c969dde61ea09aee5a38b8e5a115"
 }
